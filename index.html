@@ -118,5 +118,57 @@ function mount(){
 }
 mount();
 </script>
+
+<script>
+  // === НАСТРОЙКА логирование записей в Google Sheets===
+  const LOG_ENDPOINT = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE"; // .../exec
+  const VARIANT = new URLSearchParams(location.search).get('variant') || 'default';
+
+  function logClick(slotLabel) {
+    const payload = {
+      ts: new Date().toISOString(),
+      slot: slotLabel,
+      variant: VARIANT,
+      ua: navigator.userAgent,
+      ref: document.referrer || ''
+    };
+
+    // 1) Пытаемся sendBeacon (не требует CORS, надёжно на выгрузке)
+    try {
+      const ok = navigator.sendBeacon && navigator.sendBeacon(
+        LOG_ENDPOINT,
+        new Blob([JSON.stringify(payload)], { type: "application/json" })
+      );
+      if (ok) return;
+    } catch(_) {}
+
+    // 2) Пытаемся fetch no-cors
+    try {
+      fetch(LOG_ENDPOINT, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      return;
+    } catch(_) {}
+
+    // 3) Фолбэк: пиксель через GET
+    try {
+      const img = new Image();
+      img.src = LOG_ENDPOINT + "?slot=" + encodeURIComponent(payload.slot)
+                 + "&variant=" + encodeURIComponent(payload.variant)
+                 + "&t=" + Date.now();
+    } catch(_) {}
+  }
+
+  // Пример: вызови logClick внутри обработчика слота
+  // onSlotClick(label) {
+  //   logClick(label);
+  //   // затем redirect при необходимости:
+  //   // setTimeout(() => location.href = "thanks.html?slot=" + encodeURIComponent(label), 120);
+  // }
+</script>
+
 </body>
 </html>
