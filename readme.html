@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>README — QR Slot MVP</title>
+  <style>
+    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif; background:#0b0b0f; color:#e8e8f0; }
+    .wrap { max-width:900px; margin:0 auto; padding:40px 18px 84px; }
+    h1,h2,h3 { margin: 0 0 12px; }
+    h1 { font-size:28px; }
+    h2 { font-size:22px; margin-top:24px; }
+    p, li { color:#b8bdca; line-height:1.6; }
+    code { background:#121219; padding:2px 6px; border-radius:6px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:13px; }
+    pre { background:#121219; padding:14px; border-radius:12px; overflow:auto; }
+    a { color:#9ad7ff; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>QR → Слоты → «Спасибо» (MVP)</h1>
+    <p>Статический сайт для GitHub Pages: без персональных данных, быстрый подсчёт интереса по кликам на слоты.</p>
+
+    <h2>1) Как задеплоить</h2>
+    <ol>
+      <li>Создай новый репозиторий, например <code>demand-test</code>.</li>
+      <li>Скопируй в корень файлы <code>index.html</code>, <code>thanks.html</code>, <code>readme.html</code>.</li>
+      <li>В настройках репозитория включи Pages: ветка <code>main</code>, папка <code>/root</code>.</li>
+      <li>Открой <code>https://&lt;username&gt;.github.io/demand-test/</code>.</li>
+    </ol>
+
+    <h2>2) Как менять слоты</h2>
+    <p>В файле <code>index.html</code> найди константу <code>SLOTS</code> и укажи нужные значения:</p>
+    <pre><code>const SLOTS = ["18:00","19:00","20:00"];</code></pre>
+
+    <h2>3) Учёт кликов — 3 способа</h2>
+    <h3>A. Вообще без интеграций</h3>
+    <ul>
+      <li>Оставь <code>LOG_MODE="none"</code>. Нажатия видны в консоли браузера (для полевых тестов «на коленке»).</li>
+      <li>Можно раскомментировать редирект на <code>thanks.html?slot=...</code> и подключить аналитику (Plausible / GA) — ты увидишь просмотры по слотам.</li>
+    </ul>
+
+    <h3>B. Через Plausible / GA</h3>
+    <ul>
+      <li>Подключи скрипт аналитики (в <code>&lt;head&gt;</code> у обоих файлов).</li>
+      <li>Сделай редирект на <code>thanks.html?slot=...</code> — страница будет собирать pageview и параметры.</li>
+    </ul>
+
+    <h3>C. Запись в Google Sheets (Apps Script)</h3>
+    <ol>
+      <li>Создай таблицу Google Sheets с листом <code>Events</code> и заголовками: <code>ts</code>, <code>slot</code>, <code>ua</code>.</li>
+      <li>Открой <em>Расширения → Apps Script</em>, вставь код ниже и разверни как «Веб‑приложение» с доступом «Кому угодно, у кого есть ссылка».</li>
+      <li>Скопируй URL «веб-приложения» и вставь в <code>LOG_ENDPOINT</code>, установи <code>LOG_MODE="apps_script"</code>.</li>
+    </ol>
+
+    <pre><code>// Google Apps Script (Code.gs)
+function doPost(e) {
+  var sheet = SpreadsheetApp.getActive().getSheetByName('Events');
+  var data = JSON.parse(e.postData.contents);
+  var ts = new Date(data.ts || new Date());
+  var slot = data.slot || '';
+  var ua = data.ua || '';
+  sheet.appendRow([ts, slot, ua]);
+  return ContentService.createTextOutput('OK').setMimeType(ContentService.MimeType.TEXT);
+}</code></pre>
+
+    <h2>4) Два оффера / две цены</h2>
+    <p>Сделай два разных QR-кода на два URL (например, с разными query‑параметрами или разными репозиториями). Сравни CTR и клики на слоты.</p>
+
+    <h2>5) Генерация QR для печати</h2>
+    <p>Можно использовать любой генератор. Пример через Google Chart API (подставь свою ссылку):</p>
+    <pre><code>https://chart.googleapis.com/chart?cht=qr&amp;chs=400x400&amp;chl=https%3A%2F%2Fusername.github.io%2Fdemand-test%2F</code></pre>
+
+    <h2>6) Конфиденциальность</h2>
+    <p>Сайт не собирает персональные данные. При варианте C в таблицу пишется только время клика, выбранный слот и user-agent.</p>
+
+    <h2>7) Примечания</h2>
+    <ul>
+      <li>Дизайн — минимализм для печати QR в кампусе и быстрых тестов.</li>
+      <li>Можно задавать заголовок страницы через параметр <code>?title=...</code>.</li>
+    </ul>
+  </div>
+</body>
+</html>
