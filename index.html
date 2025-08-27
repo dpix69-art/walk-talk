@@ -121,32 +121,29 @@ mount();
 
 <script>
   // === НАСТРОЙКА (подставь свои значения) ===
-  const FORM_BASE = "https://docs.google.com/forms/d/e/1FAIpQLSfHdEkyLyyvjmbTR4MgJ-iYDH56hTf5So9J5AjO5KWq_k5gDQ/viewform?usp=pp_url&"; // см. префилл ссылку
-  const ENTRY_SLOT = "entry.516892861=TEST_SLOT";     // ID поля Slot
-  const ENTRY_VARIANT = "entry.1461502828=TEST_VAR";  // ID поля Variant (можно оставить '' если не нужно)
+  const FORM_BASE     = "https://docs.google.com/forms/d/e/1FAIpQLSfHdEkyLyyvjmbTR4MgJ-iYDH56hTf5So9J5AjO5KWq_k5gDQ/formResponse";
+  const ENTRY_SLOT    = "entry.516892861";   // Slot  
+  const ENTRY_VARIANT = "entry.1461502828";  // Variant (A/B)
 
   const VARIANT = new URLSearchParams(location.search).get('variant') || 'default';
 
   function logToGoogleForms(slotLabel) {
     const params = new URLSearchParams();
-    params.set(ENTRY_SLOT, slotLabel);
-    if (ENTRY_VARIANT) params.set(ENTRY_VARIANT, VARIANT);
-    params.set('submit', 'Submit'); // обязательный флаг авто-сабмита
-
-    // Отправляем GET как «пиксель», чтобы юзер оставался на странице
-    const img = new Image();
+    params.set(ENTRY_SLOT, encodeURIComponent(slotLabel));
+    params.set(ENTRY_VARIANT, encodeURIComponent(VARIANT));
+    params.set('submit', 'Submit');           // важно для записи
+    const img = new Image();                  // отправляем как "пиксель", без CORS
     img.src = FORM_BASE + "?" + params.toString() + "&t=" + Date.now();
   }
 
   // Пример интеграции:
   // function onSlotClick(label){
   //   logToGoogleForms(label);
-  //   // показать спасибо:
-  //   document.getElementById('ok').style.display = 'block';
-  //   document.getElementById('ok').textContent = `Спасибо! Слот ${label} отмечен.`;
-  //   // при желании редирект через 150 мс:
+  //   // показываем спасибо и, если нужно, редиректим через 150 мс
   //   // setTimeout(() => location.href = `thanks.html?slot=${encodeURIComponent(label)}`, 150);
   // }
+
+
 </script>
 
 
