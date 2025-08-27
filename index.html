@@ -120,31 +120,60 @@ mount();
 </script>
 
 <script>
-  // === НАСТРОЙКА (подставь свои значения) ===
-  const FORM_BASE     = "https://docs.google.com/forms/d/e/1FAIpQLSfHdEkyLyyvjmbTR4MgJ-iYDH56hTf5So9J5AjO5KWq_k5gDQ/formResponse";
-  const ENTRY_SLOT    = "entry.516892861";   // Slot  
-  const ENTRY_VARIANT = "entry.1461502828";  // Variant (A/B)
-
+  // ===== НАСТРОЙКА =====
+  const SLOTS = ["19:00","20:00","21:00"];
   const VARIANT = new URLSearchParams(location.search).get('variant') || 'default';
 
+  // ТВОИ Google Forms ID:
+  const FORM_BASE     = "https://docs.google.com/forms/d/e/1FAIpQLSfHdEkyLyyvjmbTR4MgJ-iYDH56hTf5So9J5AjO5KWq_k5gDQ/formResponse";
+  const ENTRY_SLOT    = "entry.516892861";   // Slot
+  const ENTRY_VARIANT = "entry.1461502828";  // Variant
+
   function logToGoogleForms(slotLabel) {
-    const params = new URLSearchParams();
-    params.set(ENTRY_SLOT, encodeURIComponent(slotLabel));
-    params.set(ENTRY_VARIANT, encodeURIComponent(VARIANT));
-    params.set('submit', 'Submit');           // важно для записи
-    const img = new Image();                  // отправляем как "пиксель", без CORS
-    img.src = FORM_BASE + "?" + params.toString() + "&t=" + Date.now();
+    const p = new URLSearchParams();
+    p.set(ENTRY_SLOT, slotLabel);           // НЕ вручную encodeURIComponent — URLSearchParams сам заэнкодит
+    p.set(ENTRY_VARIANT, VARIANT);
+    p.set('submit', 'Submit');
+
+    const url = FORM_BASE + "?" + p.toString() + "&t=" + Date.now();
+
+    // «Пиксель»: добавляем в DOM, чтобы запрос не оборвался при переходе
+    const img = new Image();
+    img.width = 1; img.height = 1; img.alt = "";
+    img.style = "position:absolute;left:-9999px;top:-9999px;";
+    img.src = url;
+    document.body.appendChild(img);
   }
 
-  // Пример интеграции:
-  // function onSlotClick(label){
-  //   logToGoogleForms(label);
-  //   // показываем спасибо и, если нужно, редиректим через 150 мс
-  //   // setTimeout(() => location.href = `thanks.html?slot=${encodeURIComponent(label)}`, 150);
-  // }
+  function makeSlotButton(label){
+    const btn = document.createElement('button');
+    btn.className = 'slot';
+    btn.textContent = label;
+    btn.addEventListener('click', () => onSlotClick(label));
+    return btn;
+  }
 
+  function onSlotClick(label){
+    // 1) логируем
+    logToGoogleForms(label);
 
+    // 2) моментальная обратная связь
+    const ok = document.getElementById('ok');
+    if (ok){ ok.style.display = 'block'; ok.textContent = `Спасибо! Слот ${label} отмечен.`; }
+
+    // 3) редиректим через небольшую задержку, чтобы пиксель отправился
+    setTimeout(() => {
+      location.href = `thanks.html?slot=${encodeURIComponent(label)}&variant=${encodeURIComponent(VARIANT)}`;
+    }, 300);
+  }
+
+  function mount(){
+    const root = document.getElementById('slots');
+    SLOTS.forEach(s => root.appendChild(makeSlotButton(s)));
+  }
+  mount();
 </script>
+
 
 
 </body>
