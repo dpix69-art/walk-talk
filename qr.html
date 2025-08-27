@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>QR для печати</title>
+  <style>
+    :root { --bg:#0b0b0f; --card:#121219; --text:#e8e8f0; --muted:#9aa0a6; }
+    * { box-sizing:border-box; }
+    html,body { height:100%; }
+    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif; background:var(--bg); color:var(--text); }
+    .wrap { max-width:900px; margin:0 auto; padding:24px 16px 48px; }
+    .card { background:var(--card); border:1px solid #1f2130; border-radius:16px; padding:18px; }
+    h1 { margin:0 0 6px; font-size:22px; }
+    .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin:10px 0 14px; }
+    input, select { background:#0f1020; border:1px solid #26293b; color:#fff; padding:10px 12px; border-radius:10px; outline:none; }
+    input[type=text] { min-width:300px; flex:1; }
+    button { background:#1a1d2d; color:#fff; border:1px solid #2c3050; padding:10px 14px; border-radius:10px; cursor:pointer; font-weight:600; }
+    #qr { background:#fff; padding:18px; display:inline-block; border-radius:12px; }
+    .preview { display:flex; align-items:flex-start; gap:24px; flex-wrap:wrap; }
+    .meta { color:var(--muted); font-size:14px; }
+    .print-note { color:#b6b9c3; font-size:13px; margin-top:8px; }
+    @media print {
+      .no-print { display:none !important; }
+      body { background:#fff; color:#000; }
+      #qr { padding:0; border-radius:0; }
+      .wrap { padding:0; }
+      .card { border:none; padding:0; }
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-MJw1kGJgQqfsgxrr6wS0fW5eF8e0nq4YfYxj5pDEc0Z9UoJ6w7C6XhJm9oG5V2z0l0wLQ3+J+Tn0B9m3r0cAPA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="no-print">
+        <h1>Генератор QR для печати</h1>
+        <div class="row">
+          <input id="url" type="text" placeholder="Вставь ссылку, например https://username.github.io/walk-and-talk/mvp/">
+          <select id="size">
+            <option value="400">400 px</option>
+            <option value="600" selected>600 px</option>
+            <option value="800">800 px</option>
+            <option value="1000">1000 px</option>
+          </select>
+          <select id="ec">
+            <option value="L">EC L (7%)</option>
+            <option value="M">EC M (15%)</option>
+            <option value="Q">EC Q (25%)</option>
+            <option value="H" selected>EC H (30%)</option>
+          </select>
+          <button id="make">Сгенерировать</button>
+          <button id="print">Печать</button>
+        </div>
+        <div class="meta">Рекомендуется 800–1000 px и уровень коррекции ошибок H для печати на афишах.</div>
+      </div>
+
+      <div class="preview" style="margin-top:16px;">
+        <div id="qr"></div>
+        <div class="no-print">
+          <div class="print-note">
+            После генерации нажми «Печать» → сохрани как PDF или распечатай. Ссылка продублируется текстом под QR.
+          </div>
+        </div>
+      </div>
+      <div id="linkText" style="margin-top:12px; color:#9aa0a6"></div>
+    </div>
+  </div>
+
+<script>
+let qr;
+
+function generate(){
+  const url = document.getElementById('url').value.trim();
+  const size = parseInt(document.getElementById('size').value, 10) || 600;
+  const ec = document.getElementById('ec').value || 'H';
+  if (!url){ alert('Вставь ссылку.'); return; }
+  const node = document.getElementById('qr');
+  node.innerHTML = '';
+  qr = new QRCode(node, {
+    text: url,
+    width: size,
+    height: size,
+    colorDark : "#000000",
+    colorLight : "#ffffff",
+    correctLevel : QRCode.CorrectLevel[ec]
+  });
+  document.getElementById('linkText').textContent = url;
+  const params = new URLSearchParams({ u:url, s:size, e:ec });
+  history.replaceState(null, '', location.pathname + '?' + params.toString());
+}
+
+function restoreFromQuery(){
+  const p = new URLSearchParams(location.search);
+  const u = p.get('u'); const s = p.get('s'); const e = p.get('e');
+  if (u){ document.getElementById('url').value = u; }
+  if (s){ document.getElementById('size').value = s; }
+  if (e){ document.getElementById('ec').value = e; }
+  if (u){ generate(); }
+}
+
+document.getElementById('make').addEventListener('click', generate);
+document.getElementById('print').addEventListener('click', () => window.print());
+restoreFromQuery();
+</script>
+</body>
+</html>
