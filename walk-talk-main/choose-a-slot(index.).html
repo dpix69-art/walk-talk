@@ -170,7 +170,7 @@
       // 2) мгновенная обратная связь и дизейбл
       const ok = document.getElementById('ok');
       ok.style.display = 'block';
-      ok.textContent = `Спасибо! Слот ${label} отмечен.`;
+      ok.textContent = `Thanks! You picked: ${label}`;
       document.querySelectorAll('button.slot').forEach(b => b.disabled = true);
 
       // 3) редирект на «спасибо»
