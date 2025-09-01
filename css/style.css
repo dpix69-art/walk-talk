@@ -1,0 +1,138 @@
+/* ===== Reset (минимальный) ===== */
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0}
+img{display:block;max-width:100%;height:auto}
+
+/* ===== Tokens ===== */
+:root{
+  --g: 8px;
+  --space-80: calc(10 * var(--g));
+  --space-40: calc(5 * var(--g));
+  --space-16: calc(2 * var(--g));
+
+  --container: 320px;           /* макет «в размер» */
+  --bg: #fff;
+  --text: #111;
+  --muted: #666;
+
+  --h1: 25px;                   /* Inria Serif */
+  --h2: 24px;                   /* Inria Sans Regular */
+  --h3: 24px;                   /* Inria Sans Bold */
+  --body: 16px;
+}
+
+/* ===== Base ===== */
+body{ background:var(--bg); color:var(--text); font: var(--body)/1.4 "Inria Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+.page{ display:block; }
+
+.container{ width:min(100%, var(--container)); margin-inline:auto; padding-inline: var(--space-16); }
+.section{ padding-block: var(--space-40); }
+.ta-center{ text-align:center; }
+.muted{ color:var(--muted); }
+.micro{ font-size:16px; }
+
+/* Typography */
+.h1{ font: normal var(--h1)/1.3 "Inria Serif", Georgia, serif; margin: 45px 0 var(--space-40) }
+.h2{ font: 400 var(--h2)/1.3 "Inria Sans", system-ui, sans-serif; margin: 0 0 var(--space-16); } .h2 .muted { color: #666;}
+.h3{ font: 700 var(--h3)/1.3 "Inria Sans", system-ui, sans-serif; margin: 0 0 var(--space-16); }
+.body{ margin: 0 0 var(--space-16); }
+
+/* Buttons — один стиль на все случаи */
+/* Кнопка — один класс на всё */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  font-size: 24px;
+  padding: 16px 40px;
+  border-radius: 999px;
+  background:#111; color:#fff; text-decoration:none; font-weight:700;
+  margin-top: var(--space-16);
+  transition: transform .15s ease, box-shadow .15s ease, background-color .2s ease;
+}
+.btn:hover{ transform: translateY(-1px); box-shadow: 0 6px 14px rgba(17,17,17,.15); }
+.btn:active{ transform: translateY(0); box-shadow: 0 2px 6px rgba(17,17,17,.2) inset; }
+.btn:focus-visible{ outline:2px solid #111; outline-offset:2px; }
+@media (prefers-reduced-motion: reduce){
+  .btn{ transition:none; }
+}
+
+
+/* HERO */
+.hero .logo{ width: 206px; margin-inline:auto; }
+.hero .lead{ margin-top: var(--space-16); }
+
+/* WHY */
+/* WHY (8px-сетка: секции — 80px, элементы — 40px, внутри — 16px) */
+.why .ears{ width:54px; margin: var(--space-16) auto var(--space-40); }
+.why-cards{ display:grid; gap: var(--space-80); }
+
+/* Карточка — один поток, рамка позиционируется внутри */
+.why-card{
+  position: relative;
+  padding: var(--space-40) var(--space-16) var(--space-16);
+  text-align:center;
+}
+
+/* Арт поверх рамки, центрирован */
+.why-card .art{
+  position: relative;
+  z-index: 1;
+  width: var(--art-w, 216px);       /* дефолт, см. пер-карточные твики ниже */
+  margin: 0 auto var(--space-16);
+}
+
+/* Декоративная рамка — под арт, лев/прав направляющая */
+.why-card .frame{
+  position:absolute;
+  z-index: 0;
+  width: var(--frame-w, 132px);
+  bottom: var(--frame-bottom, 16px);
+  left: var(--frame-left, var(--space-16));
+  right: var(--frame-right, auto);
+  opacity: .95;
+}
+.why-card[data-frame="right"] .frame{ left: auto; right: var(--space-16); }
+
+/* Пер-карточные подстройки (подгони при необходимости 1–2px) */
+.why-card[data-type="friends"]{
+  --art-w: 224px;
+  --frame-w: 140px;
+  --frame-bottom: 8px;
+}
+.why-card[data-type="therapy"]{
+  --art-w: 210px;
+  --frame-w: 132px;
+  --frame-bottom: 24px;
+}
+.why-card[data-type="ai"]{
+  --art-w: 216px;
+  --frame-w: 136px;
+  --frame-bottom: 12px;
+}
+
+/* Остальное — без изменений (заголовки/цитаты/звёзды) */
+.quote{ margin-top: var(--space-40); font-style: italic; width: 100%; margin-left: auto; }
+.stars{ margin-top: var(--space-16); }
+
+/* HOW */
+.how .wide-art{ width: 287px; margin: 0 auto var(--space-16); }
+.steps{ list-style:none; margin: var(--space-40) 0 0; padding:0; display:grid; gap: var(--space-40); }
+.step{ display:ruby; grid-template-columns: auto 1fr; gap: var(--space-16); align-items:center; }
+.step img{ width: 100vw; height:auto; }
+.step--last{ display:block; }
+.step--last .h3{ margin:0; }
+.step .pt{ margin-top:10%; }
+
+/* PRIVACY */
+.privacy-block{ display:grid; grid-template-columns: 1fr; gap: var(--space-16); align-items:center; justify-items:center; margin-bottom: var(--space-40); }
+.privacy-block img{ width:158px; }
+
+/* FAQ */
+.faq .faq-item + .faq-item{ margin-top: var(--space-40); }
+
+/* Footer */
+.footer{ padding-block: var(--space-80); border-top: 1px solid #eee; }
+
+/* Центрируем мобильный макет на широких экранах */
+@media (min-width: 480px){
+  :root{ --container: 360px; }
+}

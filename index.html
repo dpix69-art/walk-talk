@@ -1,118 +1,229 @@
-<!doctype html>
-<html lang="ru">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Выбор слота — Walk & Talk MVP</title>
-  <style>
-    :root { --bg:#0b0b0f; --card:#121219; --text:#e8e8f0; --muted:#9aa0a6; --accent:#6ee7b7; }
-    * { box-sizing:border-box; }
-    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif; background:var(--bg); color:var(--text); }
-    .wrap { max-width:720px; margin:0 auto; padding:32px 20px 56px; }
-    .card { background:var(--card); border:1px solid #1f2130; border-radius:16px; padding:24px; box-shadow:0 2px 20px rgba(0,0,0,.25); }
-    h1 { margin:0 0 8px; font-size:28px; letter-spacing:.2px; }
-    p.lead { margin:0 0 16px; color:var(--muted); }
-    .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:12px; margin:20px 0 12px; }
-    button.slot { padding:14px 16px; border-radius:12px; border:1px solid #2a2d41; background:#171826; color:#fff; font-weight:600; cursor:pointer; transition:transform .04s ease, border-color .2s ease; }
-    button.slot:hover { border-color:#3b3f5e; transform:translateY(-1px); }
-    button.slot:disabled { opacity:.6; cursor:default; }
-    .ok { display:none; margin-top:10px; color:var(--accent); font-weight:600; }
-    .footer { margin-top:28px; display:flex; gap:8px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
-    .tiny { font-size:12px; color:#9196a7; }
-    a.link { color:#9ad7ff; text-decoration:none; border-bottom:1px dotted #2b5; }
-    @media (prefers-color-scheme: light) {
-      :root { --bg:#fafafa; --card:#ffffff; --text:#0d0f14; --muted:#586174; --accent:#0a7f5a; }
-      .card { border-color:#e6e8ef; box-shadow:0 2px 20px rgba(0,0,0,.06); }
-      button.slot { background:#f3f4f8; color:#0d0f14; border-color:#d9dbe6; }
-      button.slot:hover { border-color:#c6c9d8; }
-    }
-  </style>
-  <noscript><style>.grid{display:none} .ok{display:block;color:#f66;font-weight:700}</style></noscript>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Walk & Talk - Safe Space to Talk</title>
+  <meta name="description" content="Not therapy. Not advice. No judgment. Just space to breathe. Talk it out today with pure human listening.">
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,400;0,700;1,400&family=Inria+Serif:wght@400;700&display=swap" rel="stylesheet">
+
 </head>
 <body>
-  <div class="wrap">
-    <div class="card">
-      <h1>Выбери удобное время</h1>
-      <p class="lead">Тестируем идею. Нажми на слот — этого достаточно, чтобы мы поняли интерес. Никаких персональных данных.</p>
+  <main class="page">
 
-      <div class="grid" id="slots"></div>
-      <div id="ok" class="ok">Спасибо! Интерес зафиксирован.</div>
+    <!-- HERO -->
+    <header class="section hero">
+      <div class="container ta-center">
+        <img class="logo" src="img/walk-and-talk-logo-2.svg" alt="Walk & Talk logo" />
+        <p class="lead muted">Not therapy. Not advice. No judgment. Just space to breathe.</p>
 
-      <div class="footer">
-        <div class="tiny">MVP • GitHub Pages</div>
-        <div class="tiny"><a class="link" href="thanks.html">Страница «спасибо»</a></div>
+        <h1 class="h1">Talk it out. Today. Safe.</h1>
+        <p class="body muted">Pure human listening of everything that makes you feel hard.</p>
+
+        <a class="btn" href="walk-talk-main/choose-a-slot(index.).html">Book your session</a>
+        <p class="micro muted">No credit card required</p>
       </div>
+    </header>
+
+    <!-- WHY NOT JUST… -->
+<section class="section why" aria-labelledby="why-title">
+  <div class="container ta-center">
+    <p class="h2">Secrets get stuck when there's no safe place to speak.</p>
+    <img class="ears" src="img/divider-ears.png" alt="" />
+
+    <h2 id="why-title" class="h2 muted" style="margin: 80px auto;" >Why not just…</h2>
+
+    <div class="why-cards">
+      <!-- Friends & Family -->
+      <article class="why-card" data-type="friends" data-frame="left">
+        <img class="frame" src="img/frame-left.png" alt="" aria-hidden="true" style="left: 3%; top: 119px;">
+        <img class="art" src="img/friends.png" alt="Friends illustration" style="margin: -50px 80px -50px 80px;">
+        <h3 class="h3" style="text-align: left; padding-left: 30px;">Friends &amp; family</h3>
+        <p class="body muted" style="text-align: left; padding-left: 30px; width: 200px;">For sure they care, but you can not share everything.</p>
+        <blockquote class="quote">
+          “I didn't want to dump it all on my friends, but keeping it in was impossible. Here it actually felt lighter.”
+          <div class="stars" aria-label="5 out of 5">★★★★★</div>
+          <cite>Sofia — 1st year, Spain</cite>
+        </blockquote>
+      </article>
+
+      <!-- Therapy -->
+      <article class="why-card" data-type="therapy" data-frame="right">
+        <img class="frame" src="img/frame-right.png" alt="" aria-hidden="true" style="left: 160px; top: 230px;">
+        <img class="art" src="img/therapy.png" alt="Therapy illustration" style="margin: -20px 0px -70px -40px;">
+        <h3 class="h3" style="text-align: right; margin-right: 40px;">Therapy</h3>
+        <p class="body muted" style="text-align: right; width: 201px; margin-left: auto; margin-right: 40px;">It works but hard to get today at 18:00.</p>
+        <blockquote class="quote" style="padding: 20px 15px;">
+          “I didn't want advice. I wanted to be heard and that's exactly what I got.”
+          <div class="stars" aria-label="4 out of 5">★★★★☆</div>
+          <cite>Anna (she/her) — 2nd year, Sweden</cite>
+        </blockquote>
+      </article>
+
+      <!-- AI & Apps -->
+      <article class="why-card" data-type="ai" data-frame="left">
+        <img class="frame" src="img/frame-left.png" alt="" aria-hidden="true" style="left: 3%; top: 169px;">
+        <img class="art" src="img/ai-apps.png" alt="AI apps illustration" style="width: 180px;  margin: -40px 130px">
+        <h3 class="h3" style="text-align: left; padding-left: 30px; margin-top: -80px">AI &amp; apps</h3>
+        <p class="body muted" style="text-align: left; padding-left: 30px; width: 200px;">May get you calm, but don't make you feel truly heard.</p>
+        <blockquote class="quote">
+          “With chatbots it feels fake, like I'm performing. Here it's raw and human, no script.”
+          <div class="stars" aria-label="5 out of 5">★★★★★</div>
+          <cite>Lukas — 2nd year, Poland</cite>
+        </blockquote>
+      </article>
     </div>
   </div>
+</section>
 
-<script>
-  /* === НАСТРОЙКА ===
-     Поменяй список слотов при необходимости.
-     Вариант A/B берётся из ?variant=... (например, price / value).
-  */
-  const SLOTS = ["19:00","20:00","21:00"];
-  const VARIANT = new URLSearchParams(location.search).get('variant') || 'default';
 
-  /* === ТВОЯ Google Form (Slot + Variant) ===
-     ВАЖНО: именно /formResponse (не /viewform)
-  */
-  const FORM_BASE     = "https://docs.google.com/forms/d/e/1FAIpQLSfHdEkyLyyvjmbTR4MgJ-iYDH56hTf5So9J5AjO5KWq_k5gDQ/formResponse";
-  const ENTRY_SLOT    = "entry.516892861";   // Slot
-  const ENTRY_VARIANT = "entry.1461502828";  // Variant
+    <!-- HOW IT WORKS -->
+    <section class="section how" aria-labelledby="how-title">
+      <div class="container ta-center">
+        <img class="wide-art" src="img/man-suck.png" alt="Carrying a heavy sack" />
+        <h2 id="how-title" class="h2">Carrying a huge sack of thoughts that feels way too heavy</h2>
+        <p class="body muted">We've got you.</p> <p class="body muted" style="margin-top: -16px;" > Lightness is closer than you think:</p>
 
-  function logToGoogleForms(slotLabel) {
-    // Собираем URL вида .../formResponse?entry.X=...&entry.Y=...&submit=Submit
-    const p = new URLSearchParams();
-    p.set(ENTRY_SLOT,   slotLabel);
-    p.set(ENTRY_VARIANT, VARIANT);
-    p.set('submit', 'Submit');
-    const url = FORM_BASE + "?" + p.toString() + "&t=" + Date.now();
+        <ol class="steps">
+          <li class="step pt">
+            <img src="img/pick-time.png" alt="" style="margin-top: 20%;" />
+            <div>
+              <h3 class="h3">Pick a time</h3>
+              <p class="body muted" style="width: 200px;">Choose a time that actually works for you. No more waiting around.</p>
+            </div>
+          </li>
+          <li class="step">
+            <img src="img/show-up.png" alt="" />
+            <div>
+              <h3 class="h3">Show up on time</h3>
+              <p class="body muted" style="width: 200px;">Friendly ears are already waiting, ready to listen.</p>
+            </div>
+          </li>
+          <li class="step">
+            <img src="img/speak-out.png" alt="" />
+            <div>
+              <h3 class="h3">Speak out</h3>
+              <p class="body muted" style="width: 200px;">Let it all out. No filters, no judgment — just relief.</p>
+            </div>
+          </li>
+          <li class="step step--last">
+            <h3 class="h3">…and feel lighter</h3>
+          </li>
+        </ol>
 
-    // «Пиксель»: держим его в DOM, чтобы запрос не оборвался при редиректе
-    const img = new Image();
-    img.width = 1; img.height = 1; img.alt = "";
-    img.style = "position:absolute;left:-9999px;top:-9999px;";
-    img.src = url;
-    document.body.appendChild(img);
-  }
+        <div class="cta-stack">
+          <img class="hero-art" src="img/happy-man.png" alt="Happy person" style="margin: 30px auto;" />
+          <p class="h2">Talk out everything that makes you feel sad</p>
+          <a class="btn" href="walk-talk-main/choose-a-slot(index.).html">Book your session</a>
+          <p class="micro muted">No credit card required</p>
+        </div>
+      </div>
+    </section>
 
-  function makeSlotButton(label){
-    const btn = document.createElement('button');
-    btn.className = 'slot';
-    btn.textContent = label;
-    btn.addEventListener('click', () => onSlotClick(label, btn));
-    return btn;
-  }
+    <!-- PRIVACY -->
+    <section class="section privacy" aria-labelledby="privacy-title">
+      <div class="container ta-center">
+        <h2 id="privacy-title" class="h2">Privacy Manifesto</h2>
 
-  let clicked = false;
-  function onSlotClick(label, btn){
-    if (clicked) return;            // защита от двойных кликов
-    clicked = true;
+        <div class="privacy-block">
+          <img src="img/ear-analog.png" alt="Analog ear">
+          <div>
+            <h3 class="h3">Your words stay with you.</h3>
+            <p class="body muted">Nothing is recorded. Nothing is linked to your contact or payment info. What you share here is off the record.</p>
+          </div>
+        </div>
 
-    // 1) логируем
-    logToGoogleForms(label);
+        <h3 class="h3">Trust the human touch.</h3>
+        <p class="body muted">Apps and AI carry risks. Data can leak, conversations can be stored. With a person, under a short NDA, your privacy is protected at a level technology can't match.</p>
 
-    // 2) мгновенная обратная связь и дизейбл остальных
-    const ok = document.getElementById('ok');
-    ok.style.display = 'block';
-    ok.textContent = `Спасибо! Слот ${label} отмечен.`;
-    document.querySelectorAll('button.slot').forEach(b => b.disabled = true);
+        <h3 class="h3">Speak freely, without fear.</h3>
+        <p class="body muted">We're not therapists. We won't judge. This is a space to be honest, raw, and fully heard.</p>
 
-    // 3) редирект на «спасибо» (даём 300 мс, чтобы пиксель ушёл)
-    setTimeout(() => {
-      location.href = `thanks.html?slot=${encodeURIComponent(label)}&variant=${encodeURIComponent(VARIANT)}`;
-    }, 300);
-  }
+        <h3 class="h3">Safety first.</h3>
+        <p class="body muted">For crises, please reach out to official hotlines in Germany:</p>
+        <a class="body muted" style="text-align: left" href="tel:+491701234567">0800 111 0 111</a>
+        <a class="body muted" style="text-align: left" href="tel:+491701234567">0800 111 0 222</a>
+      </div>
+    </section>
 
-  function mount(){
-    const root = document.getElementById('slots');
-    SLOTS.forEach(s => root.appendChild(makeSlotButton(s)));
+    <!-- FAQ -->
+    <section class="section faq" aria-labelledby="faq-title">
+      <div class="container">
+        <h2 id="faq-title" class="h2 ta-center" style="margin-bottom: 40px;">FAQ</h2>
 
-    // опционально: title из ?title=
-    const title = new URLSearchParams(location.search).get('title');
-    if (title) document.querySelector('h1').textContent = title;
-  }
-  mount();
-</script>
+        <div class="faq-item">
+          <h3 class="h3">Who is this for?</h3>
+          <p class="body muted">Carrying too much on your mind? Can't really tell your friends everything because of trust, judgment, or just timing. This is for you.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3 class="h3">Is this like therapy?</h3>
+          <p class="body muted">Nope. Therapy is serious work — fixing things, working through problems. Here, it's just a safe place to unload, vent, and be heard. No judgment, no pressure, no homework.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3 class="h3">Why not just use an app or AI?</h3>
+          <p class="body muted">Apps and AI are cool, but they can't truly listen. A real human under a short NDA gives a level of privacy and attention no algorithm can match.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3 class="h3">What if my German isn't good enough?</h3>
+          <p class="body muted">No problem. We speak English and German, and you can mix them if you like. The point is to be understood, not perfect.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3 class="h3">Do you record or take notes?</h3>
+          <p class="body muted">Never. No recordings, no notes, no transcripts. What you say stays between us.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3 class="h3">Who will actually listen to me?</h3>
+          <p class="body muted">Always a real human being. No apps, no bots, no AI — just 100% analog ears, fully present.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3 class="h3">What if I'm judged for what I say?</h3>
+          <p class="body muted">That won't happen. We don't criticize, we don't judge. You can be messy, angry, sad, funny — it's all welcome.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3 class="h3">How does it work?</h3>
+          <p class="body muted">Pick a time. Show up. Speak your mind. We both sign a short NDA, so you know your words won't go anywhere else.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3 class="h3">How private is this really?</h3>
+          <p class="body muted">Safer than apps or AI. We don't collect personal data, don't link your email or payment to what you say, and don't store anything.</p>
+        </div>
+
+        <div class="faq-item">
+          <h3 class="h3">How much does it cost?</h3>
+          <p class="body muted">For students: €10 per hour. Cash only for now — simple, transparent, no hidden fees.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="section cta ta-center">
+      <div class="container">
+        <img class="hero-art" src="img/happy-girl-cut.png" alt="Happy person" style="margin: -60px auto 60px;" />
+        <p class="h2">Book your session and talk out everything that makes you feel sad</p>
+        <a class="btn" href="walk-talk-main/choose-a-slot(index.).html">Book your session</a>
+        <p class="micro muted">No credit card required</p>
+      </div>
+    </section>
+
+    <footer class="footer ta-center">
+      <div class="container">
+        <p class="body muted" style="margin-bottom: -3px;">© Walk &amp; Talk — student pilot.</p>
+        <p class="body muted">Made with ❤️ in Stuttgart</p>
+        <p class="body muted">2025</p>
+      </div>
+    </footer>
+
+  </main>
 </body>
 </html>
