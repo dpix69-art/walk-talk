@@ -1,38 +1,32 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en"> <!-- thanks page держим на английском, как и остальной копирайт -->
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Спасибо — Walk & Talk</title>
+  <title>Thanks — Walk & Talk</title>
 
-  <!-- Шрифты как на главной -->
+  <!-- Fonts (same as main) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,400;0,700;1,400&family=Inria+Serif:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
-    /* ===== Токены 8px и базовая тема ===== */
     :root{
       --g: 8px;
       --space-80: calc(10 * var(--g));
       --space-40: calc(5 * var(--g));
       --space-16: calc(2 * var(--g));
 
-      --container: 320px;      /* мобильный кадр «в размер» */
-      --bg: #fff;
-      --text: #111;
-      --muted: #666;
+      --container: 320px;
+      --bg:#fff; --text:#111; --muted:#666;
 
-      --h1: 25px;              /* Inria Serif */
-      --h2: 24px;              /* Inria Sans Regular */
-      --h3: 24px;              /* Inria Sans Bold */
-      --body: 16px;
+      --h1:25px; --h2:24px; --h3:24px; --body:16px;
     }
     *,*::before,*::after{ box-sizing:border-box }
     html,body{ margin:0; padding:0 }
     body{
-      background: var(--bg);
-      color: var(--text);
+      background:var(--bg);
+      color:var(--text);
       font: var(--body)/1.4 "Inria Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     }
     .wrap{
@@ -43,24 +37,29 @@
     }
     .muted{ color:var(--muted) }
     .micro{ font-size:12px }
-
-    /* Типографика как на главной */
     .h1{ font: normal var(--h1)/1.3 "Inria Serif", Georgia, serif; margin: 0 0 var(--space-16); }
     .body{ margin: 0 0 var(--space-16); }
 
-    /* Карточка (светлая) */
     .card{
       border:1px solid #eee;
-      border-radius: 16px;
+      border-radius:16px;
       padding: var(--space-40) var(--space-16);
       background:#fff;
     }
 
-    /* Футер как на главной */
-    .footer{
-      padding-block: var(--space-80);
-      border-top: 1px solid #eee;
+    /* Button (same style as main) */
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:12px 16px; border-radius:999px;
+      background:#111; color:#fff; text-decoration:none; font-weight:700;
+      transition: transform .15s ease, box-shadow .15s ease, background-color .2s ease;
     }
+    .btn:hover{ transform: translateY(-1px); box-shadow:0 6px 14px rgba(17,17,17,.15) }
+    .btn:active{ transform: translateY(0); box-shadow:0 2px 6px rgba(17,17,17,.2) inset }
+    .btn:focus-visible{ outline:2px solid #111; outline-offset:2px }
+
+    /* Footer (like main) */
+    .footer{ padding-block: var(--space-80); border-top:1px solid #eee; }
     .footer .container{
       width:min(100%, var(--container));
       margin-inline:auto;
@@ -69,34 +68,32 @@
     }
     .footer .body{ margin:0 0 var(--space-16); }
 
-    /* Центрирование макета на шире 480px */
     @media (min-width:480px){ :root{ --container: 360px } }
   </style>
-
-  <!-- Optional analytics
-  <script defer data-domain="YOUR_DOMAIN" src="https://plausible.io/js/script.js"></script>
-  -->
 </head>
 <body>
 
   <div class="wrap">
     <div class="card">
       <h1 class="h1">Thanks!</h1>
-      <p class="body muted">Prototyping in progress. Add your email — we’ll notify at launch. No spam.</p>
+      <p class="body muted">We’re testing the idea. Leave your email and we’ll let you know when we start. No spam.</p>
+
+      <!-- If slot exists, show it -->
       <p id="slot" class="body"></p>
 
-      <!-- EmailOctopus (как у тебя) -->
+      <!-- If no slot, show this fallback -->
+      <div id="fallback" style="display:none">
+        <p class="body muted" style="margin-top:var(--space-16)">Did you pick a slot?</p>
+        <!-- Если страница выбора у тебя называется иначе, замени href -->
+        <p class="body"><a class="btn" href="index.html">Pick a time</a></p>
+      </div>
+
+      <!-- Email capture (your embed) -->
       <script async src="https://eocampaign1.com/form/e0aa6dee-83f2-11f0-96ba-55a62ba6ad4b.js"
               data-form="e0aa6dee-83f2-11f0-96ba-55a62ba6ad4b"></script>
-      <!-- Если нужна ссылка назад — раскомментируй:
-      <p class="body" style="margin-top:var(--space-16);">
-        <a href="index.html" style="color:#111; text-decoration:underline dotted #bbb 1px; text-underline-offset:3px;">Вернуться</a>
-      </p>
-      -->
     </div>
   </div>
 
-  <!-- Футер как на главной -->
   <footer class="footer">
     <div class="container">
       <p class="body muted">© Walk &amp; Talk — student pilot.</p>
@@ -105,9 +102,17 @@
   </footer>
 
   <script>
-    // Показываем выбранный слот из thanks.html?slot=19%3A00
+    // Read slot from thanks.html?slot=19%3A00
     const s = new URLSearchParams(location.search).get('slot');
-    if (s) document.getElementById('slot').textContent = `Вы выбрали слот: ${s}`;
+    const slotEl = document.getElementById('slot');
+    const fb = document.getElementById('fallback');
+
+    if (s) {
+      slotEl.textContent = `You picked: ${s}`;
+      fb.style.display = 'none';
+    } else {
+      fb.style.display = 'block';
+    }
   </script>
 </body>
 </html>
