@@ -3,35 +3,111 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Спасибо!</title>
+  <title>Спасибо — Walk & Talk</title>
+
+  <!-- Шрифты как на главной -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,400;0,700;1,400&family=Inria+Serif:wght@400;700&display=swap" rel="stylesheet">
+
   <style>
-    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif; background:#0b0b0f; color:#e8e8f0; }
-    .wrap { max-width:720px; margin:0 auto; padding:48px 20px; }
-    .card { background:#121219; border:1px solid #1f2130; border-radius:16px; padding:28px; box-shadow:0 2px 20px rgba(0,0,0,.25); }
-    h1 { margin:0 0 8px; font-size:28px; }
-    p { margin:0; color:#9aa0a6; }
-    .slot { margin-top:8px; font-weight:600; }
-    a { color:#9ad7ff; text-decoration:none; }
-    .inner {display:none}
+    /* ===== Токены 8px и базовая тема ===== */
+    :root{
+      --g: 8px;
+      --space-80: calc(10 * var(--g));
+      --space-40: calc(5 * var(--g));
+      --space-16: calc(2 * var(--g));
+
+      --container: 320px;      /* мобильный кадр «в размер» */
+      --bg: #fff;
+      --text: #111;
+      --muted: #666;
+
+      --h1: 25px;              /* Inria Serif */
+      --h2: 24px;              /* Inria Sans Regular */
+      --h3: 24px;              /* Inria Sans Bold */
+      --body: 16px;
+    }
+    *,*::before,*::after{ box-sizing:border-box }
+    html,body{ margin:0; padding:0 }
+    body{
+      background: var(--bg);
+      color: var(--text);
+      font: var(--body)/1.4 "Inria Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+    .wrap{
+      width:min(100%, var(--container));
+      margin-inline:auto;
+      padding: var(--space-80) var(--space-16);
+      text-align:center;
+    }
+    .muted{ color:var(--muted) }
+    .micro{ font-size:12px }
+
+    /* Типографика как на главной */
+    .h1{ font: normal var(--h1)/1.3 "Inria Serif", Georgia, serif; margin: 0 0 var(--space-16); }
+    .body{ margin: 0 0 var(--space-16); }
+
+    /* Карточка (светлая) */
+    .card{
+      border:1px solid #eee;
+      border-radius: 16px;
+      padding: var(--space-40) var(--space-16);
+      background:#fff;
+    }
+
+    /* Футер как на главной */
+    .footer{
+      padding-block: var(--space-80);
+      border-top: 1px solid #eee;
+    }
+    .footer .container{
+      width:min(100%, var(--container));
+      margin-inline:auto;
+      padding-inline: var(--space-16);
+      text-align:center;
+    }
+    .footer .body{ margin:0 0 var(--space-16); }
+
+    /* Центрирование макета на шире 480px */
+    @media (min-width:480px){ :root{ --container: 360px } }
   </style>
+
   <!-- Optional analytics
   <script defer data-domain="YOUR_DOMAIN" src="https://plausible.io/js/script.js"></script>
   -->
 </head>
 <body>
+
   <div class="wrap">
     <div class="card">
-      <h1>Спасибо!</h1>
-      <p>Мы фиксируем интерес, сервис в подготовке.</p>
-      <p class="slot" id="slot"></p>
-      <script async src="https://eocampaign1.com/form/e0aa6dee-83f2-11f0-96ba-55a62ba6ad4b.js" data-form="e0aa6dee-83f2-11f0-96ba-55a62ba6ad4b"></script>
-      <!-- <p style="margin-top:16px;"><a href="index.html">Вернуться</a></p> -->
+      <h1 class="h1">Thanks!</h1>
+      <p class="body muted">Prototyping in progress. Add your email — we’ll notify at launch. No spam.</p>
+      <p id="slot" class="body"></p>
+
+      <!-- EmailOctopus (как у тебя) -->
+      <script async src="https://eocampaign1.com/form/e0aa6dee-83f2-11f0-96ba-55a62ba6ad4b.js"
+              data-form="e0aa6dee-83f2-11f0-96ba-55a62ba6ad4b"></script>
+      <!-- Если нужна ссылка назад — раскомментируй:
+      <p class="body" style="margin-top:var(--space-16);">
+        <a href="index.html" style="color:#111; text-decoration:underline dotted #bbb 1px; text-underline-offset:3px;">Вернуться</a>
+      </p>
+      -->
     </div>
   </div>
-<script>
-  const p = new URLSearchParams(location.search);
-  const s = p.get('slot');
-  if (s){ document.getElementById('slot').textContent = `Вы выбрали слот: ${s}`; }
-</script>
+
+  <!-- Футер как на главной -->
+  <footer class="footer">
+    <div class="container">
+      <p class="body muted">© Walk &amp; Talk — student pilot.</p>
+      <p class="body muted">Made with ❤️ in Stuttgart</p>
+    </div>
+  </footer>
+
+  <script>
+    // Показываем выбранный слот из thanks.html?slot=19%3A00
+    const s = new URLSearchParams(location.search).get('slot');
+    if (s) document.getElementById('slot').textContent = `Вы выбрали слот: ${s}`;
+  </script>
 </body>
 </html>
