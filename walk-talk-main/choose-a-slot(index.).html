@@ -30,29 +30,21 @@
     }
     *,*::before,*::after{ box-sizing:border-box }
     html,body{ margin:0; padding:0 }
-    img{ display:block; max-width:100%; height:auto }
     body{
       background: var(--bg);
       color: var(--text);
       font: var(--body)/1.4 "Inria Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     }
 
-    /* ===== Каркас страницы ===== */
-    .wrap{
-      width:min(100%, var(--container));
-      margin-inline:auto;
-      padding: var(--space-80) var(--space-16);
-    }
+    /* Каркас */
+    .wrap{ width:min(100%, var(--container)); margin-inline:auto; padding: var(--space-80) var(--space-16); }
     .ta-center{ text-align:center }
     .muted{ color:var(--muted) }
     .micro{ font-size:12px }
 
     /* Заголовки как на главной */
-    .h1{
-      font: normal var(--h1)/1.3 "Inria Serif", Georgia, serif;
-      margin: 0 0 var(--space-16);
-    }
-    .lead{ margin: 0 0 var(--space-40) }
+    .h1{ font: normal var(--h1)/1.3 "Inria Serif", Georgia, serif; margin: 0 0 var(--space-16); }
+    .lead{ margin: 0 0 var(--space-40); }
 
     /* ===== Кнопка общего вида (CTA), как на главной ===== */
     .btn{
@@ -66,40 +58,36 @@
     .btn:focus-visible{ outline:2px solid #111; outline-offset:2px }
     @media (prefers-reduced-motion: reduce){ .btn{ transition:none } }
 
-    /* ===== Карточка/рамка блока (светлая, как на главной) ===== */
-    .card{
-      border:1px solid #eee;
-      border-radius: 16px;
-      padding: var(--space-40) var(--space-16);
-      background:#fff;
-    }
-
-    /* ===== Сетка слотов — простой блочный поток =====
-       (одна колонка, 16px между кнопками, 40px от заголовка) */
+    /* ===== Сетка слотов — простой блочный поток ===== */
     .slot-grid{
       display:grid;
       gap: var(--space-16);
       margin: var(--space-40) 0;
     }
 
-    /* Кнопки-слоты — капсулы, нейтральные (белый фон) */
+    /* Кнопки-слоты — ЧЕРНЫЕ, как CTA на главной */
     button.slot{
-      appearance:none; border:1px solid #e6e6e6; background:#fff; color:var(--text);
+      appearance:none; border:none; background:#111; color:#fff;
       font-weight:700; padding: 12px 16px; border-radius: 999px; cursor:pointer;
-      transition: border-color .2s ease, transform .05s ease, box-shadow .15s ease;
+      transition: transform .05s ease, box-shadow .15s ease, background-color .2s ease;
     }
-    button.slot:hover{ border-color:#cfcfcf; transform: translateY(-1px); box-shadow:0 4px 10px rgba(0,0,0,.06) }
-    button.slot:active{ transform: translateY(0); box-shadow:none }
+    button.slot:hover{ transform: translateY(-1px); box-shadow:0 6px 14px rgba(17,17,17,.15) }
+    button.slot:active{ transform: translateY(0); box-shadow:0 2px 6px rgba(17,17,17,.2) inset }
     button.slot:focus-visible{ outline:2px solid #111; outline-offset:2px }
     button.slot:disabled{ opacity:.6; cursor:default }
 
-    /* Нижняя плашка */
+    /* Футер как на главной */
     .footer{
-      margin-top: var(--space-40);
-      display:flex; gap: var(--space-16); align-items:center; justify-content:space-between; flex-wrap:wrap;
+      padding-block: var(--space-80);
+      border-top: 1px solid #eee;
     }
-    a.link{ color:#111; text-decoration: underline dotted #bbb 1px; text-underline-offset: 3px; }
-    a.link:hover{ text-decoration-color:#111 }
+    .footer .container{
+      width:min(100%, var(--container));
+      margin-inline:auto;
+      padding-inline: var(--space-16);
+      text-align:center;
+    }
+    .footer .body{ margin:0 0 var(--space-16); }
 
     /* Центрирование макета на шире 480px (без «резины») */
     @media (min-width:480px){ :root{ --container: 360px } }
@@ -111,31 +99,33 @@
   </noscript>
 </head>
 <body>
-  <div class="wrap">
-    <div class="card ta-center">
-      <!-- Заголовок и подзаголовок как на главной -->
-      <h1 class="h1">Выбери удобное время</h1>
-      <p class="lead muted">Тестируем идею. Нажми на слот — этого достаточно, чтобы мы поняли интерес. Никаких персональных данных.</p>
 
-      <!-- Слоты (кнопки) -->
-      <div class="slot-grid" id="slots" role="group" aria-label="Доступные слоты"></div>
+  <div class="wrap ta-center">
+    <!-- Заголовок — по твоей правке -->
+    <h1 class="h1">Pick a time.</h1>
+    <!-- краткий лид можно убрать совсем; оставляю пустым -->
 
-      <!-- Быстрая обратная связь -->
-      <div id="ok" class="ok micro" style="display:none">Спасибо! Интерес зафиксирован.</div>
+    <!-- Слоты (кнопки) -->
+    <div class="slot-grid" id="slots" role="group" aria-label="Доступные слоты"></div>
 
-      <div class="footer">
-        <div class="micro muted">MVP • GitHub Pages</div>
-        <div class="micro"><a class="link" href="thanks.html">Страница «спасибо»</a></div>
-      </div>
-    </div>
+    <!-- Быстрая обратная связь -->
+    <div id="ok" class="ok micro" style="display:none">Спасибо! Интерес зафиксирован.</div>
   </div>
+
+  <!-- Футер как на главной -->
+  <footer class="footer">
+    <div class="container">
+      <p class="body muted">© Walk &amp; Talk — student pilot.</p>
+      <p class="body muted">Made with ❤️ in Stuttgart</p>
+    </div>
+  </footer>
 
   <script>
     /* === НАСТРОЙКА ===
-       Поменяй список слотов при необходимости.
+       Слоты 19–21 по часу.
        Вариант A/B берётся из ?variant=... (например, price / value).
     */
-    const SLOTS = ["12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00"];
+    const SLOTS   = ["19:00","20:00","21:00"];
     const VARIANT = new URLSearchParams(location.search).get('variant') || 'default';
 
     /* === ТВОЯ Google Form (Slot + Variant) ===
@@ -178,8 +168,9 @@
       logToGoogleForms(label);
 
       // 2) мгновенная обратная связь и дизейбл
-      document.getElementById('ok').style.display = 'block';
-      document.getElementById('ok').textContent = `Спасибо! Слот ${label} отмечен.`;
+      const ok = document.getElementById('ok');
+      ok.style.display = 'block';
+      ok.textContent = `Спасибо! Слот ${label} отмечен.`;
       document.querySelectorAll('button.slot').forEach(b => b.disabled = true);
 
       // 3) редирект на «спасибо»
@@ -192,131 +183,7 @@
     (function mount(){
       const root = document.getElementById('slots');
       SLOTS.forEach(s => root.appendChild(makeSlotButton(s)));
-
-      // опционально: заголовок из ?title=
-      const title = new URLSearchParams(location.search).get('title');
-      if (title) document.querySelector('.h1').textContent = title;
     })();
   </script>
 </body>
 </html>
-
-
-<!-- <!doctype html>
-<html lang="ru">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Выбор слота — Walk & Talk MVP</title>
-  <style>
-    :root { --bg:#0b0b0f; --card:#121219; --text:#e8e8f0; --muted:#9aa0a6; --accent:#6ee7b7; }
-    * { box-sizing:border-box; }
-    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif; background:var(--bg); color:var(--text); }
-    .wrap { max-width:720px; margin:0 auto; padding:32px 20px 56px; }
-    .card { background:var(--card); border:1px solid #1f2130; border-radius:16px; padding:24px; box-shadow:0 2px 20px rgba(0,0,0,.25); }
-    h1 { margin:0 0 8px; font-size:28px; letter-spacing:.2px; }
-    p.lead { margin:0 0 16px; color:var(--muted); }
-    .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:12px; margin:20px 0 12px; }
-    button.slot { padding:14px 16px; border-radius:12px; border:1px solid #2a2d41; background:#171826; color:#fff; font-weight:600; cursor:pointer; transition:transform .04s ease, border-color .2s ease; }
-    button.slot:hover { border-color:#3b3f5e; transform:translateY(-1px); }
-    button.slot:disabled { opacity:.6; cursor:default; }
-    .ok { display:none; margin-top:10px; color:var(--accent); font-weight:600; }
-    .footer { margin-top:28px; display:flex; gap:8px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
-    .tiny { font-size:12px; color:#9196a7; }
-    a.link { color:#9ad7ff; text-decoration:none; border-bottom:1px dotted #2b5; }
-    @media (prefers-color-scheme: light) {
-      :root { --bg:#fafafa; --card:#ffffff; --text:#0d0f14; --muted:#586174; --accent:#0a7f5a; }
-      .card { border-color:#e6e8ef; box-shadow:0 2px 20px rgba(0,0,0,.06); }
-      button.slot { background:#f3f4f8; color:#0d0f14; border-color:#d9dbe6; }
-      button.slot:hover { border-color:#c6c9d8; }
-    }
-  </style>
-  <noscript><style>.grid{display:none} .ok{display:block;color:#f66;font-weight:700}</style></noscript>
-</head>
-<body>
-  <div class="wrap">
-    <div class="card">
-      <h1>Выбери удобное время</h1>
-      <p class="lead">Тестируем идею. Нажми на слот — этого достаточно, чтобы мы поняли интерес. Никаких персональных данных.</p>
-
-      <div class="grid" id="slots"></div>
-      <div id="ok" class="ok">Спасибо! Интерес зафиксирован.</div>
-
-      <div class="footer">
-        <div class="tiny">MVP • GitHub Pages</div>
-        <div class="tiny"><a class="link" href="thanks.html">Страница «спасибо»</a></div>
-      </div>
-    </div>
-  </div>
-
-<script>
-  /* === НАСТРОЙКА ===
-     Поменяй список слотов при необходимости.
-     Вариант A/B берётся из ?variant=... (например, price / value).
-  */
-  const SLOTS = ["19:00","20:00","21:00"];
-  const VARIANT = new URLSearchParams(location.search).get('variant') || 'default';
-
-  /* === ТВОЯ Google Form (Slot + Variant) ===
-     ВАЖНО: именно /formResponse (не /viewform)
-  */
-  const FORM_BASE     = "https://docs.google.com/forms/d/e/1FAIpQLSfHdEkyLyyvjmbTR4MgJ-iYDH56hTf5So9J5AjO5KWq_k5gDQ/formResponse";
-  const ENTRY_SLOT    = "entry.516892861";   // Slot
-  const ENTRY_VARIANT = "entry.1461502828";  // Variant
-
-  function logToGoogleForms(slotLabel) {
-    // Собираем URL вида .../formResponse?entry.X=...&entry.Y=...&submit=Submit
-    const p = new URLSearchParams();
-    p.set(ENTRY_SLOT,   slotLabel);
-    p.set(ENTRY_VARIANT, VARIANT);
-    p.set('submit', 'Submit');
-    const url = FORM_BASE + "?" + p.toString() + "&t=" + Date.now();
-
-    // «Пиксель»: держим его в DOM, чтобы запрос не оборвался при редиректе
-    const img = new Image();
-    img.width = 1; img.height = 1; img.alt = "";
-    img.style = "position:absolute;left:-9999px;top:-9999px;";
-    img.src = url;
-    document.body.appendChild(img);
-  }
-
-  function makeSlotButton(label){
-    const btn = document.createElement('button');
-    btn.className = 'slot';
-    btn.textContent = label;
-    btn.addEventListener('click', () => onSlotClick(label, btn));
-    return btn;
-  }
-
-  let clicked = false;
-  function onSlotClick(label, btn){
-    if (clicked) return;            // защита от двойных кликов
-    clicked = true;
-
-    // 1) логируем
-    logToGoogleForms(label);
-
-    // 2) мгновенная обратная связь и дизейбл остальных
-    const ok = document.getElementById('ok');
-    ok.style.display = 'block';
-    ok.textContent = `Спасибо! Слот ${label} отмечен.`;
-    document.querySelectorAll('button.slot').forEach(b => b.disabled = true);
-
-    // 3) редирект на «спасибо» (даём 300 мс, чтобы пиксель ушёл)
-    setTimeout(() => {
-      location.href = `thanks.html?slot=${encodeURIComponent(label)}&variant=${encodeURIComponent(VARIANT)}`;
-    }, 300);
-  }
-
-  function mount(){
-    const root = document.getElementById('slots');
-    SLOTS.forEach(s => root.appendChild(makeSlotButton(s)));
-
-    // опционально: title из ?title=
-    const title = new URLSearchParams(location.search).get('title');
-    if (title) document.querySelector('h1').textContent = title;
-  }
-  mount();
-</script>
-</body>
-</html> -->
