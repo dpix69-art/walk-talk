@@ -3,6 +3,210 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Выбор слота — Walk & Talk</title>
+
+  <!-- Шрифты как на главной -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,400;0,700;1,400&family=Inria+Serif:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ===== 8px-токены и база в стиле основного сайта ===== */
+    :root{
+      --g: 8px;
+      --space-80: calc(10 * var(--g));
+      --space-40: calc(5 * var(--g));
+      --space-16: calc(2 * var(--g));
+
+      --container: 320px;      /* мобильный кадр «в размер» */
+      --bg: #fff;
+      --text: #111;
+      --muted: #666;
+
+      --h1: 25px;              /* Inria Serif */
+      --h2: 24px;              /* Inria Sans Regular */
+      --h3: 24px;              /* Inria Sans Bold */
+      --body: 16px;
+    }
+    *,*::before,*::after{ box-sizing:border-box }
+    html,body{ margin:0; padding:0 }
+    img{ display:block; max-width:100%; height:auto }
+    body{
+      background: var(--bg);
+      color: var(--text);
+      font: var(--body)/1.4 "Inria Sans", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    /* ===== Каркас страницы ===== */
+    .wrap{
+      width:min(100%, var(--container));
+      margin-inline:auto;
+      padding: var(--space-80) var(--space-16);
+    }
+    .ta-center{ text-align:center }
+    .muted{ color:var(--muted) }
+    .micro{ font-size:12px }
+
+    /* Заголовки как на главной */
+    .h1{
+      font: normal var(--h1)/1.3 "Inria Serif", Georgia, serif;
+      margin: 0 0 var(--space-16);
+    }
+    .lead{ margin: 0 0 var(--space-40) }
+
+    /* ===== Кнопка общего вида (CTA), как на главной ===== */
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding: 12px 16px; border-radius:999px;
+      background:#111; color:#fff; text-decoration:none; font-weight:700;
+      transition: transform .15s ease, box-shadow .15s ease, background-color .2s ease;
+    }
+    .btn:hover{ transform: translateY(-1px); box-shadow:0 6px 14px rgba(17,17,17,.15) }
+    .btn:active{ transform: translateY(0); box-shadow:0 2px 6px rgba(17,17,17,.2) inset }
+    .btn:focus-visible{ outline:2px solid #111; outline-offset:2px }
+    @media (prefers-reduced-motion: reduce){ .btn{ transition:none } }
+
+    /* ===== Карточка/рамка блока (светлая, как на главной) ===== */
+    .card{
+      border:1px solid #eee;
+      border-radius: 16px;
+      padding: var(--space-40) var(--space-16);
+      background:#fff;
+    }
+
+    /* ===== Сетка слотов — простой блочный поток =====
+       (одна колонка, 16px между кнопками, 40px от заголовка) */
+    .slot-grid{
+      display:grid;
+      gap: var(--space-16);
+      margin: var(--space-40) 0;
+    }
+
+    /* Кнопки-слоты — капсулы, нейтральные (белый фон) */
+    button.slot{
+      appearance:none; border:1px solid #e6e6e6; background:#fff; color:var(--text);
+      font-weight:700; padding: 12px 16px; border-radius: 999px; cursor:pointer;
+      transition: border-color .2s ease, transform .05s ease, box-shadow .15s ease;
+    }
+    button.slot:hover{ border-color:#cfcfcf; transform: translateY(-1px); box-shadow:0 4px 10px rgba(0,0,0,.06) }
+    button.slot:active{ transform: translateY(0); box-shadow:none }
+    button.slot:focus-visible{ outline:2px solid #111; outline-offset:2px }
+    button.slot:disabled{ opacity:.6; cursor:default }
+
+    /* Нижняя плашка */
+    .footer{
+      margin-top: var(--space-40);
+      display:flex; gap: var(--space-16); align-items:center; justify-content:space-between; flex-wrap:wrap;
+    }
+    a.link{ color:#111; text-decoration: underline dotted #bbb 1px; text-underline-offset: 3px; }
+    a.link:hover{ text-decoration-color:#111 }
+
+    /* Центрирование макета на шире 480px (без «резины») */
+    @media (min-width:480px){ :root{ --container: 360px } }
+  </style>
+
+  <!-- Без JS: прячем сетку и показываем уведомление -->
+  <noscript>
+    <style>.slot-grid{display:none}.ok{display:block;color:#e53935;font-weight:700;margin-top:var(--space-16)}</style>
+  </noscript>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card ta-center">
+      <!-- Заголовок и подзаголовок как на главной -->
+      <h1 class="h1">Выбери удобное время</h1>
+      <p class="lead muted">Тестируем идею. Нажми на слот — этого достаточно, чтобы мы поняли интерес. Никаких персональных данных.</p>
+
+      <!-- Слоты (кнопки) -->
+      <div class="slot-grid" id="slots" role="group" aria-label="Доступные слоты"></div>
+
+      <!-- Быстрая обратная связь -->
+      <div id="ok" class="ok micro" style="display:none">Спасибо! Интерес зафиксирован.</div>
+
+      <div class="footer">
+        <div class="micro muted">MVP • GitHub Pages</div>
+        <div class="micro"><a class="link" href="thanks.html">Страница «спасибо»</a></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* === НАСТРОЙКА ===
+       Поменяй список слотов при необходимости.
+       Вариант A/B берётся из ?variant=... (например, price / value).
+    */
+    const SLOTS = ["12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00"];
+    const VARIANT = new URLSearchParams(location.search).get('variant') || 'default';
+
+    /* === ТВОЯ Google Form (Slot + Variant) ===
+       ВАЖНО: именно /formResponse (не /viewform)
+    */
+    const FORM_BASE     = "https://docs.google.com/forms/d/e/1FAIpQLSfHdEkyLyyvjmbTR4MgJ-iYDH56hTf5So9J5AjO5KWq_k5gDQ/formResponse";
+    const ENTRY_SLOT    = "entry.516892861";   // Slot
+    const ENTRY_VARIANT = "entry.1461502828";  // Variant
+
+    // Отправка «пикселем» (чтобы запрос успел уйти до редиректа)
+    function logToGoogleForms(slotLabel){
+      const p = new URLSearchParams();
+      p.set(ENTRY_SLOT,   slotLabel);
+      p.set(ENTRY_VARIANT, VARIANT);
+      p.set('submit', 'Submit');
+      const url = FORM_BASE + "?" + p.toString() + "&t=" + Date.now();
+
+      const img = new Image();
+      img.width = 1; img.height = 1; img.alt = "";
+      img.style = "position:absolute;left:-9999px;top:-9999px;";
+      img.src = url;
+      document.body.appendChild(img);
+    }
+
+    function makeSlotButton(label){
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'slot';
+      btn.textContent = label;
+      btn.addEventListener('click', () => onSlotClick(label));
+      return btn;
+    }
+
+    let clicked = false;
+    function onSlotClick(label){
+      if (clicked) return;                // защита от двойных кликов
+      clicked = true;
+
+      // 1) логируем
+      logToGoogleForms(label);
+
+      // 2) мгновенная обратная связь и дизейбл
+      document.getElementById('ok').style.display = 'block';
+      document.getElementById('ok').textContent = `Спасибо! Слот ${label} отмечен.`;
+      document.querySelectorAll('button.slot').forEach(b => b.disabled = true);
+
+      // 3) редирект на «спасибо»
+      setTimeout(() => {
+        location.href = `thanks.html?slot=${encodeURIComponent(label)}&variant=${encodeURIComponent(VARIANT)}`;
+      }, 300);
+    }
+
+    // Монтирование
+    (function mount(){
+      const root = document.getElementById('slots');
+      SLOTS.forEach(s => root.appendChild(makeSlotButton(s)));
+
+      // опционально: заголовок из ?title=
+      const title = new URLSearchParams(location.search).get('title');
+      if (title) document.querySelector('.h1').textContent = title;
+    })();
+  </script>
+</body>
+</html>
+
+
+<!-- <!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Выбор слота — Walk & Talk MVP</title>
   <style>
     :root { --bg:#0b0b0f; --card:#121219; --text:#e8e8f0; --muted:#9aa0a6; --accent:#6ee7b7; }
@@ -115,4 +319,4 @@
   mount();
 </script>
 </body>
-</html>
+</html> -->
